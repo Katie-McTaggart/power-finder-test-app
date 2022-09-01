@@ -5,43 +5,32 @@ namespace PowerFinderTestApp
 {
     class Program
     {
-        static bool checkNextPower(int power){
-            string one = "1";
-            string two = "2";
-            string four = "4";
-            string eight = "8";
-            double result;
-            int baseValue = 16;
-            bool test_1;
-            bool test_2;
-            bool test_4;
-            bool test_8;
+        static void Main(){
+            //Function finds a power and then determines if it contains 1, 2, 4, or 8.  
+            static bool checkNextPower(int baseValue, double power){
+                char[] forbiddenValues = new char[] {'1','2','4','8'};
+                double result;
 
-            //Find the number for the next 16^x
-            result = Math.Pow(baseValue, power);
+                //Find the next power
+                result = Math.Pow(baseValue, power);
 
-            //Check the result to see if it contains one of the undesired values
-            test_1 = result.ToString().Contains(one);
-            test_2 = result.ToString().Contains(two);
-            test_4 = result.ToString().Contains(four);
-            test_8 = result.ToString().Contains(eight);
-
-            //Return true when a power is found
-            if((test_1 == false) && (test_2 == false) && (test_4 == false) && (test_8 == false)){
-                return true;
+                /*Check the result to see if it contains any one of the undesired values.
+                If it does we want to keep looking */
+                if(forbiddenValues.Any(result.ToString().Contains) == true){
+                    return false;
+                }
+                else{
+                    return true;
+                }
             }
-            else{
-                return false;
-            }
-        }
 
-        static void Main(string[] args)
-        {    
+            double j;
+            int num = 16;
             bool potentialPower;
-            int j;
             
-            for(j = 5; j<1000; j++){
-                potentialPower = checkNextPower(j);  
+            //Loop through values until a potential power is found to not contain the undesired values
+            for(j = 1; j<100; j++){
+                potentialPower = checkNextPower(num, j);  
 
                 if(potentialPower == true){
                     break;
