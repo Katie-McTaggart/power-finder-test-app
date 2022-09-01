@@ -19,27 +19,29 @@ namespace PowerFinderTestApp
     class Program
     {
         static void Main(){
-            double exponent = 4.0;
-            int baseValue = 16;
-            double power;
+            
+            /*This function takes base, the minimum (non-inclusive) exponent, list of forbidden numbers and number of cycles (optional) 
+            The number of cycles is there for performance reasons to pervent running to infinity
+            It defaults to 20 cycles if not set.*/
+            string FindNextDesiredPower(double baseValue, double exponent, char[] forbiddenValues, int maxCycles = 20){
+                double power;
 
-            exponent += 1e-15;
-            power = Math.Pow(baseValue, exponent);
-
-            //This is to prevent the while loop from continuing to run if it does not 
-            //find a value within 200 attempts.
-            int temp = 0;
-            int Max = 200;
-
-            //Check powers until one is found without containing the undesired digits
-            while(new [] {"1", "2", "4", "8"}.Any(power.ToString().Contains) && temp<Max){
+                //The exponent inputted into the function is not to be used therefore it must be incremented before the loop.
                 exponent += 1e-15;
                 power = Math.Pow(baseValue, exponent);
-                Console.WriteLine("power is " + power);
-                temp++;
-            }
-                     
-            Console.WriteLine("The result of 16^" + exponent + " is " + power + ". It is the first exponent above 4 which does not contain the digits 1,2, 4, or 8 in the power."); 
+
+                int temp = 0;
+                //Check powers until one is found without containing the undesired digits
+                while(forbiddenValues.Any(power.ToString().Contains) && temp<maxCycles){
+                    exponent += 1e-15;
+                    power = Math.Pow(baseValue, exponent);               
+                    temp++;
+                }
+                return "The result of 16^" + exponent + " is " + power + ". It is the first exponent above 4 which does not contain the digits 1,2, 4, or 8 in the power.";     
+                
+            } 
+            Console.WriteLine(FindNextDesiredPower(16,4,new [] {'1', '2', '4', '8'}, 200));
+
         }
     }
 }   
